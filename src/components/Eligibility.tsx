@@ -1,7 +1,22 @@
+'use client';
+import { useState, useEffect } from 'react';
 import { ArrowLeft, Check } from 'lucide-react'
 import Link from 'next/link';
-
+import SkeletonLoading from "@/components/Skeleton"; // Skeleton component
 export default function ProofOfEligibility() {
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+ 
+    
+    // Simulate a loading delay of 5 seconds
+    const timer = setTimeout(() => {
+      setLoading(false);
+      
+      
+    }, 1000); 
+
+    return () => clearTimeout(timer); // Cleanup the timer when the component unmounts
+  }, []);
   const ProgressStep = ({ number, active }: { number: number; active: boolean }) => (
     <div className="flex items-center">
       <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs ${active ? 'bg-teal-500 text-gray-900' : 'bg-gray-700 text-gray-400'}`}>
@@ -14,6 +29,10 @@ export default function ProofOfEligibility() {
   )
 
   return (
+    <div>
+    {loading ? (
+      <SkeletonLoading /> // Render the skeleton while loading
+    ) : (
     <div className="min-h-screen bg-gray-900 text-gray-100 p-6 flex flex-col">
       <header className="mb-8">
         <button className="text-gray-400 hover:text-gray-200 transition-colors">
@@ -64,6 +83,8 @@ export default function ProofOfEligibility() {
           </Link>
         </button>
       </main>
+    </div>
+    )}      
     </div>
   )
 }

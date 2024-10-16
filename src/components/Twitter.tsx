@@ -1,8 +1,14 @@
+'use client';
+import { useState } from "react";
 import { ArrowLeft, Copy } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function SubmitXPost() {
+  const [postLink, setPostLink] = useState(""); // State to track the input value
+  const [error, setError] = useState(false); // State to track if there is an error
+
+  // ProgressStep component
   const ProgressStep = ({
     number,
     active,
@@ -27,6 +33,16 @@ export default function SubmitXPost() {
       )}
     </div>
   );
+
+  // Handle button click and validate input
+  const handleContinue = () => {
+    if (!postLink.trim()) {
+      setError(true); // Show error if input is empty
+    } else {
+      setError(false); // Clear error if input is valid
+      // Proceed with navigation or other actions here
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-900 text-gray-100 p-4 sm:p-6 flex flex-col">
@@ -60,6 +76,8 @@ export default function SubmitXPost() {
               id="post-link"
               className="w-full bg-gray-700 text-white p-2 sm:p-3 rounded-md"
               placeholder="https://x.com/coingecko/status/181499..."
+              value={postLink}
+              onChange={(e) => setPostLink(e.target.value)} // Update input value
             />
           </div>
 
@@ -104,8 +122,18 @@ export default function SubmitXPost() {
           </div>
         </div>
 
-        <button className="bg-white text-gray-900 font-semibold py-2 sm:py-3 px-6 rounded-full hover:bg-gray-200 transition-colors w-full max-w-xs">
-          <Link href="/proof">Continue</Link>
+        {/* Error Message */}
+        {error && (
+          <p className="text-red-500 text-sm sm:text-base mb-4">
+            Please enter a valid link.
+          </p>
+        )}
+
+        <button
+          className="bg-white text-gray-900 font-semibold py-2 sm:py-3 px-6 rounded-full hover:bg-gray-200 transition-colors w-full max-w-xs"
+          onClick={handleContinue}
+        >
+          Continue
         </button>
       </main>
     </div>
